@@ -24,6 +24,10 @@ window.addEventListener("load", function(){
 			
 			canvas.addEventListener("mouseup", stopPlayer);
 			
+			canvas.addEventListener("touchstart", movePlayer);
+			
+			canvas.addEventListener("touchend", stopPlayer);
+			
 			
 
 			//var CANVAS_WIDTH = 900;
@@ -228,6 +232,9 @@ window.addEventListener("load", function(){
 
 			var draw = function() {
 				ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+				
+				ctx.drawImage(sprites.background, 0, 0);
+				
 				
 				ctx.fillStyle = "00FF00";
 				ctx.fillRect(player.x, player.y, player.w, player.h);
