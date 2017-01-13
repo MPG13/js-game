@@ -233,7 +233,7 @@ window.addEventListener("load", function(){
 			var draw = function() {
 				ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 				
-				ctx.drawImage(sprites.background, 0, 0);
+				//ctx.drawImage(sprites.background, 0, 0);
 				
 				
 				ctx.fillStyle = "00FF00";
