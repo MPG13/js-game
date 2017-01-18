@@ -1,65 +1,16 @@
 
-
-
-window.addEventListener("load", function(){
-	
-	var movePlayer = function() {
-				
-				player.isMoving = true;
-				
-			};
-	var stopPlayer = function() {
-		
-		player.isMoving = false;
-	};
-	
-	
-	
-	
-
-			var canvas = document.getElementById("myCanvas");
-			var ctx = canvas.getContext("2d");
-			
-			canvas.addEventListener("mousedown", movePlayer);
-			
-			canvas.addEventListener("mouseup", stopPlayer);
-			
-			canvas.addEventListener("touchstart", movePlayer);
-			
-			canvas.addEventListener("touchend", stopPlayer);
-			
-			
-
-			//var CANVAS_WIDTH = 900;
-			//var CANVAS_HEIGHT = 900;
-			//var GAME_WIDTH = 900;
-			//var GAME_HEIGHT = 900;
+window.addEventListener('load', function(){
 			var CANVAS_WIDTH = 2000;
 			var CANVAS_HEIGHT = 1000;
 			var GAME_WIDTH = 2000;
 			var GAME_HEIGHT = 1000;
 
-			var gameLive = true;
+var sprites = {};
 
-			var player = {
-				x : 10,
-				y : 500,
-				speedX : 10,
-				w : 50,
-				h : 50,
-				isMoving: false,
-			};
-			
-			var goal = {
-				
-				x: 1950,
-				y: 500,
-				w: 50,
-				h: 36
-				
-			};
-			
-			var enemies = [{
+var gameLive = true;
+
+// array [] holds MANY values
+var enemies = [{
 				x : 50,
 				y : 22,
 				speedY : 2,
@@ -147,150 +98,156 @@ window.addEventListener("load", function(){
 			},
 			];
 
-			var update = function() {
+
+var goal = {
 				
-				if (player.isMoving) {
-					
-					
-					player.x += player.speedX;
-				}
+				x: 1950,
+				y: 500,
+				w: 50,
+				h: 36
 				
-				if (checkCollision(player, goal)) {
-					gamelive = false;
-					alert('You won!');
-					window.location = "";
-				}
-				
-
-				var j = 0;
-				var n = enemies.length;
-
-				//while (j < n) {
-					// (start; stop; step size)
-					
-
-					for (var j = 0; j < enemies.length; j++){
-						//check collision
-
-					if(checkCollision(player,enemies[j])){
-						
-						gameLive = false;
-						
-						alert('oh no! Game Over!');
-						
-						window.location = "";
-						
-						
-					}
-					
-					enemies[j].y += enemies[j].speedY;
-					
-					if(enemies[j].y>= GAME_HEIGHT){
-						
-						enemies[j].y = GAME_HEIGHT; //prevent weird round-offs
-						enemies[j].speedY *= -1;
-						
-						
-					}
-					
-					else if(enemies[j].y<= 0){
-						
-						enemies[j].y = 0;
-						enemies[j].speedY *= -1;
-						
-						
-					}
-					/*
-					//begin of x speed change
-					
-					enemies[j].x += enemies[j].speedX;
-					
-					if(enemies[j].x>= GAME_WIDTH){
-						
-						enemies[j].x = GAME_WIDTH; //prevent weird round-offs
-						enemies[j].speedX *= -1;
-						
-						
-					}
-					
-					else if(enemies[j].x<= 0){
-						
-						enemies[j].x = 0;
-						enemies[j].speedX *= -1;
-						
-						
-					}
-					
-					
-					//end of x movement
-					*/ 
-					//j++; use this in while loop but already part of the "for" loop
-
-				}
-
 			};
 
-			var draw = function() {
-				ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-				
-				//ctx.drawImage(sprites.background, 0, 0);
-				
-				
-				ctx.fillStyle = "00FF00";
-				ctx.fillRect(player.x, player.y, player.w, player.h);
-				
-				ctx.fillStyle= "rgb(128, 128, 0, 0.5)";
-				ctx.fillRect(goal.x, goal.y, goal.w, goal.h);
 
-				
-				//ctx.fillStyle = "#3333FF";
-				
-				// one color for testing the program
-
-				var j = 0;
-				var n = enemies.length;
-
-				while (j < n) {
-					
-					if(enemies[j].speedY > 0){
-					ctx.fillStyle = enemies[j].myColor;
-					}
-					else if(enemies[j].speedY < 0){
-						ctx.fillStyle = "#0000FF";
-					}
-					else {
-						ctx.fillStylle = "#000000";
-						
-					}
-					ctx.fillRect(enemies[j].x, enemies[j].y, enemies[j].w, enemies[j].h);
-					j++;
-				}
-
+var player = {
+				x : 10,
+				y : 500,
+				speedX : 10,
+				w : 50,
+				h : 50,
+				isMoving: false,
 			};
 
-			var step = function() {// call yourself is "recursion"
+var movePlayer = function(){
+player.isMoving = true;
+};
 
-				update();
-				draw();
+var stopPlayer = function(){
+player.isMoving = false;
+};
+
+var load = function(){
+sprites.player = new Image();
+sprites.player.src = 'sprites/hero.png';
+
+sprites.goal = new Image();
+sprites.goal.src = 'sprites/chest.png';
+
+sprites.enemy = new Image();
+sprites.enemy.src = 'sprites/enemy.png';
+
+sprites.background = new Image();
+sprites.background.src = 'sprites/floor.png';	
+	
+};
 
 
-				if (gameLive){
-				window.requestAnimationFrame(step);
-				}
-			};
-			
-			//checkCollision
-			
-			var checkCollision = function(rect1, rect2){
-				
-				var closeOnWidth = Math.abs(rect1.x - rect2.x) <= Math.max(rect1.w, rect2.w);
-				var closeOnHeight = Math.abs(rect1.y - rect2.y) <= Math.max(rect1.h, rect2.h);
-				
-				
-				return closeOnHeight && closeOnWidth;
-			};
-			
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
 
-			step();
+canvas.addEventListener("mousedown", movePlayer );
+canvas.addEventListener("mouseup", stopPlayer );
+canvas.addEventListener("touchstart", movePlayer);
+canvas.addEventListener("touchend", stopPlayer);
 
-});
+var update = function() {
+
+var j = 0;
+var n = enemies.length;
+
+if(checkCollision(player, goal)){
+	
+	gameLive = false;
+	alert('Ya freakin winner');
+	// later bump up the difficulty level here
+	window.location = "";
+	
+}
+
+if (player.isMoving){
+	player.x += player.speedX;
+}
+
+// EXAMPLE OF FOREACH LOOPING
+enemies.forEach(function(element, index){
+element.y += element.speedY;
+
+// test for collision between player and EACH of the enemies
+if(checkCollision(player, element)){
+	gameLive = false;
+	alert('Ya darn loser!');
+	window.location = "";
+}
+
+
+if (element.y >= GAME_HEIGHT){ // check if hitting the bottom, if so flip direction
+
+element.y = GAME_HEIGHT;
+element.speedY *= -1;
+} else if (element.y <= 0){ // check if hitting top
+
+element.y = 0;
+element.speedY *= -1;
+}
+}); // end of forEach
+
+
+
+};  // end of update
+
+var draw = function() {
+ctx.clearRect(0, 0, GAME_WIDTH, CANVAS_HEIGHT);
+
+ctx.drawImage(sprites.background, 0, 0);
+ctx.drawImage(sprites.player, player.x, player.y);
+ctx.drawImage(sprites.goal, goal.x, goal.y);
+//ctx.drawImage(sprites.enemies, enemies.x, enemies.y);
+
+
+//ctx.fillStyle = "rgba(128, 128, 0, 0.6)";
+//ctx.fillRect(goal.x, goal.y, goal.w, goal.h);
+
+//ctx.fillStyle = "#000000";
+//ctx.fillRect(player.x, player.y, player.w, player.h);
+
+// EXAMPLE OF FOR LOOPING
+for (var j = 0; j < enemies.length; j++){
+/*
+if (enemies[j].speedY > 0){    // going down
+ctx.fillStyle = enemies[j].downColor;
+}
+else if (enemies[j].speedY < 0) {  // going up
+ctx.fillStyle = enemies[j].upColor;
+}
+else {
+ctx.fillStyle = "#000000";
+}
+*/
+ctx.fillRect(enemies[j].x, enemies[j].y, enemies[j].w, enemies[j].h );
+
+}
+
+}; // end of draw()
+
+var step = function() {
+update();
+draw();
+
+if (gameLive){
+window.requestAnimationFrame(step);
+};
+
+
+};
+
+
+var checkCollision = function(rect1, rect2){
+	var closeOnWidth = Math.abs(rect1.x - rect2.x) <= Math.max(rect1.w, rect2.w);
+	var closeOnHeight = Math.abs(rect1.y - rect2.y) <= Math.max(rect1.h, rect2.h);
+	return closeOnWidth && closeOnHeight;
+};
+
+load();
+step();
+
+}); // end of load event
