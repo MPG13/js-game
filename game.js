@@ -11,21 +11,21 @@ var gameLive = true;
 
 // array [] holds MANY values
 var enemies = [{
-				x : 50,
+				x : 75,
 				y : 22,
 				speedY : 2,
 				w : 10,
 				h : 10,
 				myColor : "#000066"
 			}, {
-				x : 75,
+				x : 100,
 				y : 20,
 				speedY : 4,
 				w : 15,
 				h : 15,
 				myColor : "#339933"
 			}, {
-				x : 100,
+				x : 200,
 				y : 18,
 				speedY : 6,
 				w : 20,
@@ -158,7 +158,7 @@ var n = enemies.length;
 if(checkCollision(player, goal)){
 	
 	gameLive = false;
-	alert('Ya freakin winner');
+	alert('You live in peace, having made it to the virus-free realm');
 	// later bump up the difficulty level here
 	window.location = "";
 	
@@ -175,7 +175,7 @@ element.y += element.speedY;
 // test for collision between player and EACH of the enemies
 if(checkCollision(player, element)){
 	gameLive = false;
-	alert('Ya darn loser!');
+	alert("ỳ̀̕͢͟o҉ư͢͞'̴̧̛́͝v̢͘͠ę̶̷͝͝ ́b͞e̛̕͢é̛͟n͟͝ ̀̕i̶̷n͏̵͞f̵̶͡͝e̡͏̛̕͝c̷̀͘̕͟ţ͜͜͡e͠͏̷̛͏d̸̡͠");
 	window.location = "";
 }
 
